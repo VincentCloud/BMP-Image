@@ -31,33 +31,43 @@ bmp_open( char* bmp_filename,        unsigned int *width,
   FILE *bmpfile = fopen(bmp_filename,"rb");
 
   if( bmpfile == NULL ){
-  	printf( "unable to open the file %s.\n");
-  	return -1;
+  	printf( "%s\n","unable to open the file %s.");
+  	return NULL;
   }
-
+  puts("running...");
   //Read the overall file size
   unsigned int overallFileSize;
-  fread(&overallFileSize, 1, sizeof(unsigned int), bmpfile );
-
+  fread(&overallFileSize, 1, sizeof(int), bmpfile );
+  printf("%d\n",overallFileSize);
+/*
   //Rewind file pointer to the beginning and read the entire contents.
   rewind(bmpfile);
 
+  puts("running");
+
+  img_data=(unsigned char*)malloc(overallFileSize+1);
+
   char imageData[overallFileSize];
-  if(fread( imageData, 1, overallFileSize, bmpfile ) != overallFileSize ){
-  	printf(" unable to read the requested %d bytes.\n", overallFileSize );
-  	return -1;
+  if (fread(imageData, 1, overallFileSize, bmpfile) != overallFileSize)
+  {
+    printf(" unable to read the requested %d bytes.\n", overallFileSize);
+  	return NULL;
   }
 
+  *data_size = overallFileSize;
 
+  img_data=imageData;
   //Read the image info into variables 
-  *width = (unsigned int*)(imageData +18);
-  *height = (unsigned int*)(imageData+22);
-  *bits_per_pixel = (unsigned int*)(imageData+28);
+  width = (unsigned int*)(img_data +18);
+  height = (unsigned int*)(img_data+22);
+  bits_per_pixel = (unsigned int*)(img_data+28);
+  *padding = *width%4;
+  data_offset = (unsigned int*)(img_data+8);
 
 
   
 
-
+*/
 
   return img_data;  
 }
